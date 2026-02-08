@@ -1,12 +1,22 @@
+import GoogleLoginButton from "../components/GoogleLoginButton.tsx";
 import LoginForm from "../components/layout/LoginForm.tsx";
 import usePostLogin from "../hooks/usePostLogin.tsx";
+import AuthPage from "../components/layout/AuthPage.tsx";
+import OrDivider from "../components/common/OrDivider.tsx";
+import AuthFooter from "../components/layout/AuthFooter.tsx";
 
 function LoginPage() {
   const postLogin = usePostLogin();
   return (
-    <div className="h-dvh w-dvw">
+    <AuthPage title="Welcome back!" subtitle="Login to continue">
       <LoginForm onSuccess={postLogin} />
-    </div>
+      <OrDivider />
+      <GoogleLoginButton />
+      <AuthFooter
+        link={{ label: "Sign up", to: "/signup" }}
+        label="Don't have an account? "
+      />
+    </AuthPage>
   );
 }
 

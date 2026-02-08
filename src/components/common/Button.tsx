@@ -21,7 +21,7 @@ function Button({
   return (
     <button
       type={type}
-      className={`rounded-2xl p-1 w-full ${buttonVariantStyle[variant]}`}
+      className={`rounded-2xl p-1 w-full ${buttonVariantStyle[variant]} cursor-pointer`}
       onClick={onclick}
     >
       {isLoading ? "Loading" : children}
