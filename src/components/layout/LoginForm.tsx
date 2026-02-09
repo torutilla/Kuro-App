@@ -4,6 +4,7 @@ import type { User } from "../../types/user.ts";
 import Button from "../common/Button.tsx";
 import PasswordField from "../common/PasswordField.tsx";
 import TextField from "../common/TextField.tsx";
+import { Link } from "react-router-dom";
 
 type LoginFormProps = {
   onSuccess?: (user: User) => void;
@@ -23,13 +24,10 @@ function LoginForm({ onSuccess }: LoginFormProps) {
   };
 
   return (
-    <form
-      className="flex flex-col items-center w-full h-full"
-      onSubmit={handleSubmit}
-    >
+    <form className="w-full h-full" onSubmit={handleSubmit}>
       <fieldset
         disabled={loading}
-        className="w-full grid grid-rows-3 h-full items-center"
+        className="grid grid-rows-4 gap-2 h-full w-full items-center"
       >
         <TextField
           id="email-field"
@@ -46,6 +44,9 @@ function LoginForm({ onSuccess }: LoginFormProps) {
           placeholder="Password"
           error={password.error}
         />
+        <Link to="/forgot-password" className="text-sm text-primary self-start">
+          Forgot Password?
+        </Link>
         <Button isLoading={loading} type="submit">
           Login
         </Button>

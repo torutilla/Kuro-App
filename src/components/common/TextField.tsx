@@ -23,7 +23,7 @@ function TextField({
   label,
 }: TextFieldProps) {
   return (
-    <div className="flex flex-col w-full p-1">
+    <div className="flex flex-col w-full">
       {label && (
         <label htmlFor={id} className="text-accent">
           {label}

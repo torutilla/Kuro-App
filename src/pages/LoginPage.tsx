@@ -8,7 +8,11 @@ import AuthFooter from "../components/layout/AuthFooter.tsx";
 function LoginPage() {
   const postLogin = usePostLogin();
   return (
-    <AuthPage title="Welcome back!" subtitle="Login to continue">
+    <AuthPage
+      title="Welcome back!"
+      variant="login"
+      subtitle="Login to continue"
+    >
       <LoginForm onSuccess={postLogin} />
       <OrDivider />
       <GoogleLoginButton />

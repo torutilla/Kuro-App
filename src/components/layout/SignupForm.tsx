@@ -24,8 +24,11 @@ function SignupForm() {
     } catch {}
   };
   return (
-    <form onSubmit={onSubmit}>
-      <fieldset disabled={loading} className="w-full">
+    <form className="w-full h-full" onSubmit={onSubmit}>
+      <fieldset
+        disabled={loading}
+        className="grid grid-rows-5 h-full w-full items-center"
+      >
         <TextField
           placeholder="Name"
           type="text"
