@@ -5,6 +5,7 @@ import Button from "../common/Button.tsx";
 import PasswordField from "../common/PasswordField.tsx";
 import TextField from "../common/TextField.tsx";
 import { Link } from "react-router-dom";
+import { useToast } from "../../hooks/useToast.tsx";
 
 type LoginFormProps = {
   onSuccess?: (user: User) => void;
@@ -13,10 +14,14 @@ type LoginFormProps = {
 function LoginForm({ onSuccess }: LoginFormProps) {
   const email = useInput();
   const password = useInput();
+  const { showToast } = useToast();
   const { login, loading } = useLogin();
   const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
-    if (email.error || password.error) return;
+    if (email.text === "" || password.text === "") {
+      showToast("One or more field cannot be empty", "error");
+      return;
+    }
     try {
       const data = await login(email.text, password.text);
       onSuccess?.(data);

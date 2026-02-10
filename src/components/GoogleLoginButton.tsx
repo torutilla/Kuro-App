@@ -1,19 +1,28 @@
 import GoogleSvg from "../assets/google-color.svg";
 import useGoogleOAuth from "../hooks/useGoogleOAuth.tsx";
-function GoogleLoginButton() {
+import type { User } from "../types/user.ts";
+import Button from "./common/Button.tsx";
+type GoogleLoginButtonProps = {
+  onSuccess?: (user: User) => void;
+};
+function GoogleLoginButton({ onSuccess }: GoogleLoginButtonProps) {
   const { login, loading } = useGoogleOAuth();
   const handleClick = async () => {
-    const user = await login();
+    try {
+      const user = await login();
+      onSuccess?.(user);
+    } catch {}
   };
   return (
-    <button
-      type="button"
-      onClick={handleClick}
-      className="flex p-1 border border-dark w-full justify-center rounded-2xl gap-2 text-dark items-center cursor-pointer"
+    <Button
+      color="black"
+      variant="outline"
+      onclick={handleClick}
+      isLoading={loading}
     >
-      <img src={GoogleSvg} />
+      <img src={GoogleSvg} className="p-1" />
       <p>Sign in with Google</p>
-    </button>
+    </Button>
   );
 }
 

@@ -15,7 +15,7 @@ function LoginPage() {
     >
       <LoginForm onSuccess={postLogin} />
       <OrDivider />
-      <GoogleLoginButton />
+      <GoogleLoginButton onSuccess={postLogin} />
       <AuthFooter
         link={{ label: "Sign up", to: "/signup" }}
         label="Don't have an account? "
