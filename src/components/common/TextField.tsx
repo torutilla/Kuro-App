@@ -1,5 +1,5 @@
 import type { ChangeEvent } from "react";
-
+import clsx from "clsx";
 type TextFieldProps = {
   id: string;
   placeholder?: string;
@@ -10,6 +10,7 @@ type TextFieldProps = {
   error?: string | null;
   children?: React.ReactNode;
   label?: string | null;
+  onBlur?: () => void;
 };
 function TextField({
   id,
@@ -18,9 +19,10 @@ function TextField({
   onChange,
   type = "text",
   autoComplete = "on",
-  error = null,
+  error,
   children,
   label,
+  onBlur,
 }: TextFieldProps) {
   return (
     <div className="flex flex-col w-full">
@@ -31,28 +33,32 @@ function TextField({
       )}
       <div className="relative">
         <input
+          onBlur={onBlur}
           spellCheck={false}
           autoCapitalize="off"
           autoCorrect="off"
           autoComplete={autoComplete}
-          className={`
-        bg-neutral-200 
-          border border-neutral-300 p-2
-        placeholder:text-neutral-400 
-          relative w-full rounded-lg 
-          no-default-appearance focus:outline
-          focus:ring-1 focus:ring-primary 
-          ${error && "focus:ring-error"}
-        selection:bg-secondary selection:text-white`}
           type={type}
           id={id}
           value={value}
           onChange={onChange}
           placeholder={placeholder}
+          className={clsx(
+            "relative w-full rounded-lg p-2 no-default-appearance",
+            "border",
+            "selection:bg-secondary selection:text-white",
+            "focus:outline focus:ring-1",
+            {
+              "bg-error/20 placeholder:text-error/20 focus:ring-error text-error border-error/20":
+                !!error,
+              "focus:ring-primary bg-neutral-200 placeholder:text-neutral-400 border-neutral-300":
+                !error,
+            },
+          )}
         ></input>
         {children}
       </div>
-      {error && <span className="text-error">{error}</span>}
+      {error && <p className="text-error text-xs">{error}</p>}
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import type { Toast } from "../../hooks/useToast.tsx";
+import { Check, Error } from "@mui/icons-material";
 
 type ToastItemProps = {
   toast: Toast;
@@ -8,6 +9,10 @@ type ToastItemProps = {
 function ToastItem({ toast, onRemove }: ToastItemProps) {
   const ref = useRef<HTMLDivElement>(null);
   const toastStyle = `bg-${toast.type}/40 border border-${toast.type} text-${toast.type}`;
+  const Icon = {
+    success: Check,
+    error: Error,
+  }[toast.type];
   useEffect(() => {
     if (!toast.exiting) return;
 
@@ -24,8 +29,9 @@ function ToastItem({ toast, onRemove }: ToastItemProps) {
   return (
     <div
       ref={ref}
-      className={`${toastStyle} rounded-lg px-4 py-2 toast in ${toast.exiting && "out"}`}
+      className={`${toastStyle} rounded-lg px-4 py-2 toast in ${toast.exiting && "out"} flex gap-2`}
     >
+      {<Icon />}
       <p>{toast.message}</p>
     </div>
   );

@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-@theme {
+@theme static {
   --color-primary: rgb(145, 47, 86);
   --color-secondary: rgb(82, 25, 69);
   --color-accent: rgb(54, 31, 39);

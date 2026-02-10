@@ -6,20 +6,22 @@ import PasswordField from "../common/PasswordField.tsx";
 import TextField from "../common/TextField.tsx";
 import { Link } from "react-router-dom";
 import { useToast } from "../../hooks/useToast.tsx";
+import { isStringEmpty } from "../../utils/validation.ts";
 
 type LoginFormProps = {
   onSuccess?: (user: User) => void;
 };
 
 function LoginForm({ onSuccess }: LoginFormProps) {
-  const email = useInput();
-  const password = useInput();
+  const email = useInput({ validators: [isStringEmpty] });
+  const password = useInput({ validators: [isStringEmpty] });
   const { showToast } = useToast();
   const { login, loading } = useLogin();
   const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
-    if (email.text === "" || password.text === "") {
+    if (isStringEmpty(email.text) || isStringEmpty(password.text)) {
       showToast("One or more field cannot be empty", "error");
+      email.validate();
       return;
     }
     try {
@@ -32,14 +34,14 @@ function LoginForm({ onSuccess }: LoginFormProps) {
     <form className="w-full h-full" onSubmit={handleSubmit}>
       <fieldset
         disabled={loading}
-        className="grid grid-rows-4 gap-2 h-full w-full items-center"
+        className="grid grid-rows-[1fr_1fr_auto_1fr] gap-2 h-full w-full items-center"
       >
         <TextField
+          error={email.error}
           id="email-field"
           value={email.text}
           onChange={email.onChange}
           placeholder="Email"
-          autoComplete="email"
         />
         <PasswordField
           autoComplete="current-password"
@@ -49,7 +51,7 @@ function LoginForm({ onSuccess }: LoginFormProps) {
           placeholder="Password"
           error={password.error}
         />
-        <Link to="/forgot-password" className="text-sm text-primary self-start">
+        <Link to="/forgot-password" className="text-sm text-primary w-fit">
           Forgot Password?
         </Link>
         <Button isLoading={loading} type="submit">

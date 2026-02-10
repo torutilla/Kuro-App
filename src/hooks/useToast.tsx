@@ -24,7 +24,7 @@ function ToastProvider({ children }: { children: React.ReactNode }) {
 
     setTimeout(() => {
       dismissToast(id);
-    }, 3000);
+    }, 2000);
   };
 
   const dismissToast = (toastId: number) => {
@@ -40,7 +40,7 @@ function ToastProvider({ children }: { children: React.ReactNode }) {
   return (
     <ToastContext.Provider value={{ showToast }}>
       {children}
-      <div className="fixed bottom-2 right-2">
+      <div className="fixed bottom-2 right-2 flex flex-col gap-1">
         {toasts.map((toast) => {
           return (
             <ToastItem toast={toast} onRemove={removeToast} key={toast.id} />
