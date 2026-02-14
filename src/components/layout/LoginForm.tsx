@@ -16,18 +16,21 @@ function LoginForm({ onSuccess }: LoginFormProps) {
   const email = useInput({ validators: [isStringEmpty] });
   const password = useInput({ validators: [isStringEmpty] });
   const { showToast } = useToast();
-  const { login, loading } = useLogin();
+  const { login, loading, error } = useLogin();
   const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
-    if (isStringEmpty(email.text) || isStringEmpty(password.text)) {
-      showToast("One or more field cannot be empty", "error");
-      email.validate();
+    const emailError = email.validate();
+    const passwordError = password.validate();
+    if (emailError || passwordError) {
+      showToast("One or more field cannot be empty");
       return;
     }
     try {
       const data = await login(email.text, password.text);
       onSuccess?.(data);
-    } catch {}
+    } catch {
+      showToast("Login failed. Please try again.");
+    }
   };
 
   return (

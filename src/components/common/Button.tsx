@@ -1,3 +1,6 @@
+import clsx from "clsx";
+import LoadingComponent from "./LoadingComponent.tsx";
+
 type ButtonColor = "primary" | "secondary" | "black";
 type ButtonVariant = "solid" | "outline" | "icon";
 type ButtonProps = {
@@ -33,20 +36,23 @@ function Button({
     outline: {
       primary: "bg-transparent border border-primary text-primary",
       secondary: "bg-transparent border border-secondary text-secondary",
-      black: "bg-transparent border border-black text-black",
+      black:
+        "bg-transparent border border-black text-black hover:bg-neutral-300/30",
     },
   };
   return (
     <button
+      disabled={isLoading}
       type={type}
-      className={`
-        rounded-xl p-1 w-full flex items-center justify-center
-        ${buttonVariantStyle[variant][color]} 
-        cursor-pointer 
-        `}
+      className={clsx(
+        "min-h-8 rounded-xl p-1 w-full shrink-0",
+        "flex items-center justify-center text-sm",
+        "cursor-pointer disabled:cursor-not-allowed",
+        buttonVariantStyle[variant][color],
+      )}
       onClick={onclick}
     >
-      {isLoading ? "Loading" : children}
+      {isLoading ? <LoadingComponent /> : children}
     </button>
   );
 }

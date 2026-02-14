@@ -8,6 +8,7 @@ function PasswordChecklist({ value }: { value: string }) {
         const invalid = rule.isInvalid(value);
         return (
           <PasswordChecklistItem
+            key={rule.id}
             type={invalid ? "error" : "success"}
             description={rule.message}
           />

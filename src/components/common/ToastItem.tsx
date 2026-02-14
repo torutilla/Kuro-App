@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import type { Toast } from "../../hooks/useToast.tsx";
 import { Check, Error } from "@mui/icons-material";
+import clsx from "clsx";
 
 type ToastItemProps = {
   toast: Toast;
@@ -8,7 +9,7 @@ type ToastItemProps = {
 };
 function ToastItem({ toast, onRemove }: ToastItemProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const toastStyle = `bg-${toast.type}/40 border border-${toast.type} text-${toast.type}`;
+  const toastStyle = `border-${toast.type} text-${toast.type}`;
   const Icon = {
     success: Check,
     error: Error,
@@ -24,12 +25,22 @@ function ToastItem({ toast, onRemove }: ToastItemProps) {
     };
     node.addEventListener("animationend", handleEnd);
 
-    return node.removeEventListener("animationend", handleEnd);
+    return () => {
+      node.removeEventListener("animationend", handleEnd);
+    };
   }, [toast.exiting]);
   return (
     <div
       ref={ref}
-      className={`${toastStyle} rounded-lg px-4 py-2 toast in ${toast.exiting && "out"} flex gap-2`}
+      className={clsx(
+        "flex gap-2 border rounded-lg px-4 py-2 toast in",
+        `${toastStyle}`,
+        `${toast.exiting && "out"}`,
+        {
+          "bg-error/8": toast.type == "error",
+          "bg-success/8": toast.type == "success",
+        },
+      )}
     >
       {<Icon />}
       <p>{toast.message}</p>

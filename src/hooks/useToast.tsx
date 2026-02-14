@@ -15,10 +15,7 @@ const ToastContext = createContext<ToastContextType | null>(null);
 function ToastProvider({ children }: { children: React.ReactNode }) {
   const [toasts, setToasts] = useState<Toast[]>([]);
 
-  const showToast = (
-    message: string,
-    type: "success" | "error" = "success",
-  ) => {
+  const showToast = (message: string, type: "success" | "error" = "error") => {
     const id = Date.now();
     setToasts((prev) => [...prev, { id, message, type, exiting: false }]);
 

@@ -1,4 +1,4 @@
-import { Check, Error } from "@mui/icons-material";
+import { Check, ErrorOutline } from "@mui/icons-material";
 import clsx from "clsx";
 type ChecklistItemProps = {
   type: "error" | "success";
@@ -7,12 +7,16 @@ type ChecklistItemProps = {
 function PasswordChecklistItem({ type, description }: ChecklistItemProps) {
   return (
     <div
-      className={clsx("flex gap-1 text-xs items-center", {
+      className={clsx("flex gap-1 text-sm items-center", {
         "text-error": type == "error",
         "text-success": type == "success",
       })}
     >
-      {type === "error" ? <Error /> : <Check />}
+      {type === "error" ? (
+        <ErrorOutline fontSize="inherit" />
+      ) : (
+        <Check fontSize="inherit" />
+      )}
       <p>{description}</p>
     </div>
   );

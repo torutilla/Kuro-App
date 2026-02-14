@@ -9,30 +9,42 @@ import {
   validatePassword,
 } from "../../utils/validation.ts";
 import PasswordChecklist from "../common/PasswordChecklist.tsx";
+import { useToast } from "../../hooks/useToast.tsx";
 
 function SignupForm() {
   const { signup, loading } = useRegistration();
-
+  const { showToast } = useToast();
   const name = useInput({ validators: [isStringEmpty] });
   const email = useInput({ validators: [isStringEmpty, isValidEmail] });
 
-  const password = useInput({ validators: [validatePassword] });
+  const password = useInput({ validators: [isStringEmpty, validatePassword] });
   const passwordMatch = (v: string) =>
     v !== password.text ? "Passwords do not match." : null;
   const confirmPassword = useInput({
-    validators: [passwordMatch],
+    validators: [isStringEmpty, passwordMatch],
     validateOn: "onChange",
   });
 
   const onSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
+    const nameError = name.validate();
+    const emailError = email.validate();
+    const passwordError = password.validate();
+    const confirmPasswordError = confirmPassword.validate();
+
+    if (nameError || emailError || passwordError || confirmPasswordError) {
+      return;
+    }
+
     try {
       await signup({
         email: email.text,
         name: name.text,
         password: password.text,
       });
-    } catch {}
+    } catch {
+      showToast("Sign Up failed. Please try again.", "error");
+    }
   };
 
   return (
@@ -48,7 +60,7 @@ function SignupForm() {
           id="NameField"
           value={name.text}
           onChange={name.onChange}
-          onBlur={() => name.validate()}
+          onBlur={name.validate}
         />
         <TextField
           error={email.error}
@@ -57,7 +69,7 @@ function SignupForm() {
           id="EmailField"
           value={email.text}
           onChange={email.onChange}
-          onBlur={() => email.validate()}
+          onBlur={email.validate}
         />
         <PasswordField
           id="PasswordField"
@@ -73,6 +85,7 @@ function SignupForm() {
           value={confirmPassword.text}
           onChange={confirmPassword.onChange}
           error={confirmPassword.error}
+          onBlur={confirmPassword.validate}
         />
         <Button type="submit" isLoading={loading}>
           Submit
