@@ -1,7 +1,7 @@
 import GoogleSvg from "../assets/google-color.svg";
 import useGoogleOAuth from "../hooks/useGoogleOAuth.tsx";
-import type { User } from "../../../shared/types/user.ts";
-import Button from "../../../shared/components/common/Button.tsx";
+import type { User } from "@shared/types/user.ts";
+import Button from "@shared/components/common/Button.tsx";
 type GoogleLoginButtonProps = {
   onSuccess?: (user: User) => void;
 };

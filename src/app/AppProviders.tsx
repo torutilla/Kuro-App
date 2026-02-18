@@ -4,7 +4,7 @@ import ToastProvider from "../shared/hooks/useToast.tsx";
 function AppProviders({ children }: { children: React.ReactNode }) {
   return (
     <AuthProvider>
-      <ToastProvider>{children}</ToastProvider>;
+      <ToastProvider>{children}</ToastProvider>
     </AuthProvider>
   );
 }

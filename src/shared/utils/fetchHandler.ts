@@ -1,11 +1,26 @@
 import { API_BASE_URL } from "../config/api.ts";
 
-async function fetchHandler<T>(path: string, reqInit?: RequestInit): Promise<T> {
-    const response = await fetch(
-        `${API_BASE_URL}${path}`, {
-        credentials: "include",
+async function fetchHandler<T>(
+    path: string,
+    reqInit: RequestInit = {},
+    retried = false
+): Promise<T> {
+    const response = await fetch(`${API_BASE_URL}${path}`, {
         ...reqInit,
+        credentials: "include",
     });
+
+    if (response.status === 401 && !retried) {
+        const refreshRes = await fetch(`${API_BASE_URL}/auth/refresh`, {
+            method: "POST",
+            credentials: "include",
+        });
+
+        if (refreshRes.ok) {
+            return fetchHandler<T>(path, reqInit, true);
+        }
+    }
+
     if (!response.ok) {
         let message = "Something went wrong";
         try {
@@ -16,6 +31,7 @@ async function fetchHandler<T>(path: string, reqInit?: RequestInit): Promise<T> 
         }
         throw new Error(message);
     }
+
     return response.json() as Promise<T>;
 }
 

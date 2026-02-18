@@ -1,29 +1,31 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import type { User } from "@shared/types/user.ts";
-import useAsync from "@shared/hooks/useAsync.tsx";
-import fetchHandler from "@shared/utils/fetchHandler.ts";
+import AuthService from "../services/authService.ts";
 
 type AuthContextType = {
   user?: User | null;
   loading: boolean;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
 };
 const AuthContext = createContext<AuthContextType | null>(null);
 function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
-  const { run, loading } = useAsync<User>();
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await run(() => fetchHandler("/"));
+        const res = await AuthService.getUser();
         setUser(res);
       } catch {
         setUser(null);
+      } finally {
+        setLoading(false);
       }
     };
     checkAuth();
   }, []);
   return (
-    <AuthContext.Provider value={{ user, loading }}>
+    <AuthContext.Provider value={{ user, loading, setUser }}>
       {children}
     </AuthContext.Provider>
   );

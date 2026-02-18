@@ -1,16 +1,13 @@
 import { useAuth } from "@features/auth/hooks/useAuth.tsx";
+import LoadingScreen from "@shared/components/LoadingScreen.tsx";
 import { Navigate, Outlet } from "react-router-dom";
-import LoadingScreen from "./LoadingScreen.tsx";
 
-function ProtectedRoute() {
+function PublicRoute() {
   const { user, loading } = useAuth();
 
   if (loading) return <LoadingScreen />;
-
-  if (!user) {
-    return <Navigate to="/login" replace />;
-  }
+  if (user) return <Navigate to="/" replace />;
   return <Outlet />;
 }
 
-export default ProtectedRoute;
+export default PublicRoute;

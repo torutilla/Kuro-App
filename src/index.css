@@ -38,8 +38,8 @@ input:focus {
 }
 
 .auth-page {
-  width: 100dvw;
-  height: 100dvh;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   place-items: center;
   justify-content: center;

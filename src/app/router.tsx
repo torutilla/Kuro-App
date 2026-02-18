@@ -3,16 +3,23 @@ import LoginPage from "@features/auth/pages/LoginPage";
 import SignupPage from "@features/auth/pages/SignupPage";
 import ForgotPassword from "@features/auth/pages/ForgotPassword";
 import Home from "@features/pets/pages/Home";
-import ProtectedRoute from "./protected/ProtectedRoute";
+import ProtectedRoute from "./guards/ProtectedRoute";
+import PublicRoute from "./guards/PublicRoute.tsx";
 export const router = createBrowserRouter([
   {
-    path: "/login",
-    element: <LoginPage />,
+    element: <PublicRoute />,
+    children: [
+      {
+        path: "/login",
+        element: <LoginPage />,
+      },
+      {
+        path: "/signup",
+        element: <SignupPage />,
+      },
+    ],
   },
-  {
-    path: "/signup",
-    element: <SignupPage />,
-  },
+
   {
     path: "/forgot-password",
     element: <ForgotPassword />,

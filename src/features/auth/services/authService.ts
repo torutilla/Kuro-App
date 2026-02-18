@@ -4,7 +4,7 @@ import fetchHandler from "@shared/utils/fetchHandler.ts";
 
 const AuthService = {
     login(email: string, password: string): Promise<User> {
-        return fetchHandler("/login", {
+        return fetchHandler("/auth/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -15,7 +15,7 @@ const AuthService = {
     },
 
     signup(input: RegistrationInput): Promise<User> {
-        return fetchHandler("/signup", {
+        return fetchHandler("/auth/signup", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -24,7 +24,11 @@ const AuthService = {
                 password: input.password,
             })
         })
-    }
+    },
+
+    getUser(): Promise<User | null> {
+        return fetchHandler("/users/me", { method: "GET" });
+    },
 }
 
 export default AuthService;
