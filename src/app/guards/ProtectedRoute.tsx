@@ -1,6 +1,6 @@
 import { useAuth } from "@features/auth/hooks/useAuth.tsx";
 import { Navigate, Outlet } from "react-router-dom";
-import LoadingScreen from "@shared/components/LoadingScreen.tsx";
+import LoadingScreen from "@/shared/components/layout/LoadingScreen";
 
 function ProtectedRoute() {
   const { user, loading } = useAuth();
