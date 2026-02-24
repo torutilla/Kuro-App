@@ -1,58 +1,83 @@
-import clsx from "clsx";
+import { cva, type VariantProps } from "class-variance-authority";
+import { cn } from "@shared/index.ts";
 import LoadingComponent from "./LoadingComponent.tsx";
 
-type ButtonColor = "primary" | "secondary" | "black";
-type ButtonVariant = "solid" | "outline" | "icon";
-type ButtonProps = {
-  children?: React.ReactNode;
-  onclick?: () => void | Promise<void>;
-  isLoading?: boolean;
-  type?: "button" | "submit" | "reset";
-  variant?: ButtonVariant;
-  color?: ButtonColor;
-};
+const buttonVariants = cva(
+  `min-h-8 rounded-xl p-1 w-full shrink-0
+  flex items-center justify-center text-sm
+  cursor-pointer disabled:cursor-not-allowed`,
+  {
+    variants: {
+      variant: {
+        solid: "text-white hover:brightness-90",
+        outline: "bg-transparent border",
+        icon: "bg-transparent hover:brightness-90",
+      },
+      color: {
+        primary: "",
+        secondary: "",
+        black: "",
+      },
+    },
+    compoundVariants: [
+      {
+        variant: "solid",
+        color: "primary",
+        className: "bg-primary",
+      },
+      {
+        variant: "solid",
+        color: "secondary",
+        className: "bg-secondary",
+      },
+      {
+        variant: "solid",
+        color: "black",
+        className: "bg-dark",
+      },
+      { variant: "icon", color: "primary", className: "text-primary" },
+      { variant: "icon", color: "secondary", className: "text-secondary" },
+      { variant: "icon", color: "black", className: "text-dark" },
+      {
+        variant: "outline",
+        color: "primary",
+        className: " border-primary text-primary",
+      },
+      {
+        variant: "outline",
+        color: "secondary",
+        className: " border-secondary text-secondary",
+      },
+      {
+        variant: "outline",
+        color: "black",
+        className: "border-dark text-dark hover:bg-neutral-400/10",
+      },
+    ],
+    defaultVariants: {
+      variant: "solid",
+      color: "primary",
+    },
+  },
+);
+type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
+  VariantProps<typeof buttonVariants>;
+
 function Button({
-  children,
-  onclick,
-  isLoading = false,
   type = "button",
   variant = "solid",
   color = "primary",
+  disabled,
+  children,
+  ...props
 }: ButtonProps) {
-  const buttonVariantStyle: Record<
-    ButtonVariant,
-    Record<ButtonColor, string>
-  > = {
-    solid: {
-      primary: "bg-primary text-white",
-      secondary: "bg-secondary text-white",
-      black: "bg-black text-white",
-    },
-    icon: {
-      primary: "bg-transparent text-primary",
-      secondary: "bg-transparent text-secondary",
-      black: "bg-transparent text-black",
-    },
-    outline: {
-      primary: "bg-transparent border border-primary text-primary",
-      secondary: "bg-transparent border border-secondary text-secondary",
-      black:
-        "bg-transparent border border-black text-black hover:bg-neutral-300/30",
-    },
-  };
   return (
     <button
-      disabled={isLoading}
       type={type}
-      className={clsx(
-        "min-h-8 rounded-xl p-1 w-full shrink-0",
-        "flex items-center justify-center text-sm",
-        "cursor-pointer disabled:cursor-not-allowed",
-        buttonVariantStyle[variant][color],
-      )}
-      onClick={onclick}
+      className={cn(buttonVariants({ color, variant }))}
+      {...props}
     >
-      {isLoading ? <LoadingComponent /> : children}
+      {disabled ? <LoadingComponent /> : children}
     </button>
   );
 }

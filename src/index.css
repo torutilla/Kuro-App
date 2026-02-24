@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
 
 @theme static {
   --color-primary: rgb(145, 47, 86);
@@ -15,10 +16,20 @@
   --size-lg: clamp(32px, 12vw, 64px);
 }
 
+p::selection,
+h1::selection,
+a::selection {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}
+
 a {
   color: var(--color-secondary);
 }
 
+a:hover {
+  filter: brightness(0.95);
+}
 button:active {
   transform: scale(0.993);
 }

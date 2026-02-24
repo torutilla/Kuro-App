@@ -1,6 +1,5 @@
-import type { RegistrationInput } from "@shared/types/input.ts";
-import type { User } from "@shared/types/user.ts";
-import fetchHandler from "@shared/utils/fetchHandler.ts";
+import { fetchHandler, } from "@shared/index.ts";
+import type { User, RegistrationInput } from "@shared/index.ts"
 
 const AuthService = {
     login(email: string, password: string): Promise<User> {
@@ -26,9 +25,7 @@ const AuthService = {
         })
     },
 
-    getUser(): Promise<User | null> {
-        return fetchHandler("/users/me", { method: "GET" });
-    },
+
 }
 
 export default AuthService;

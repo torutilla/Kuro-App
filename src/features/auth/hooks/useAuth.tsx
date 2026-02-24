@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import type { User } from "@shared/types/user.ts";
-import AuthService from "../services/authService.ts";
+import { UserService } from "../services/userService.ts";
 
 type AuthContextType = {
   user?: User | null;
@@ -14,7 +14,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const res = await AuthService.getUser();
+        const res = await UserService.getUser();
         setUser(res);
       } catch {
         setUser(null);

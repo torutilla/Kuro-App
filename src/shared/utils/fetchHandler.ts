@@ -1,6 +1,6 @@
 import { API_BASE_URL } from "../config/api.ts";
 
-async function fetchHandler<T>(
+export async function fetchHandler<T>(
     path: string,
     reqInit: RequestInit = {},
     retried = false
@@ -35,4 +35,3 @@ async function fetchHandler<T>(
     return response.json() as Promise<T>;
 }
 
-export default fetchHandler;

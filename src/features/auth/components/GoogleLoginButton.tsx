@@ -17,8 +17,8 @@ function GoogleLoginButton({ onSuccess }: GoogleLoginButtonProps) {
     <Button
       color="black"
       variant="outline"
-      onclick={handleClick}
-      isLoading={loading}
+      onClick={handleClick}
+      disabled={loading}
     >
       <img src={GoogleSvg} className="p-1" />
       <p>Sign in with Google</p>

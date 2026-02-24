@@ -13,7 +13,7 @@ function PasswordField(props: PasswordFieldProps) {
     <>
       <TextField {...props} type={show ? "text" : "password"}>
         <div className="absolute right-0 top-0 p-1">
-          <Button variant="icon" onclick={() => setShow(!show)}>
+          <Button type="button" variant="icon" onClick={() => setShow(!show)}>
             {show ? <Visibility /> : <VisibilityOff />}
           </Button>
         </div>

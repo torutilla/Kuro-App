@@ -1,50 +1,19 @@
-import type { ChangeEvent } from "react";
 import clsx from "clsx";
-type TextFieldProps = {
-  id: string;
-  placeholder?: string;
-  value: string;
-  type?: React.HTMLInputTypeAttribute;
-  autoComplete?: React.HTMLInputAutoCompleteAttribute;
-  onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
-
+type TextFieldProps = React.InputHTMLAttributes<HTMLInputElement> & {
   error?: string | null;
-  children?: React.ReactNode;
   label?: string | null;
-  onBlur?: () => void;
 };
-function TextField({
-  id,
-  value,
-  placeholder,
-  onChange,
-
-  type = "text",
-  autoComplete = "on",
-  error,
-  children,
-  label,
-  onBlur,
-}: TextFieldProps) {
+function TextField({ error, label, children, ...props }: TextFieldProps) {
   return (
     <div className="grid items-start w-full">
       {label && (
-        <label htmlFor={id} className="text-accent">
+        <label htmlFor={props.id} className="text-accent">
           {label}
         </label>
       )}
       <div className="relative">
         <input
-          onBlur={onBlur}
-          spellCheck={false}
-          autoCapitalize="off"
-          autoCorrect="off"
-          autoComplete={autoComplete}
-          type={type}
-          id={id}
-          value={value}
-          onChange={onChange}
-          placeholder={placeholder}
+          {...props}
           className={clsx(
             "relative w-full rounded-lg p-2 no-default-appearance",
             "border",
@@ -60,7 +29,14 @@ function TextField({
         ></input>
         {children}
       </div>
-      {error && <p className="text-error text-xs">{error}</p>}
+      <p
+        className={clsx("text-xs transition-all duration-300 ease-in-out", {
+          "text-error translate-y-0 opacity-100": !!error,
+          "text-transparent -translate-y-1 opacity-0": !error,
+        })}
+      >
+        {error || "\u00A0"}
+      </p>
     </div>
   );
 }

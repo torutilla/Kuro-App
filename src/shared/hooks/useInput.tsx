@@ -1,34 +1,36 @@
 import { useState } from "react";
+import type z from "zod/v3";
 
 type ValidationMode = "onBlur" | "onChange" | "onSubmit";
-type Validator = (value: string) => string | null;
 type UseInputOptions = {
   initialValue?: string;
-  validators?: Validator[];
+  validator?: z.ZodSchema;
   validateOn?: ValidationMode;
 };
 type InputController = {
   validate: () => string | null;
   error: string | null;
   text: string;
+  setError: (msg: string | null) => void;
   onChange: (e: React.ChangeEvent<HTMLInputElement, HTMLElement>) => void;
   reset: () => void;
 };
 function useInput({
   initialValue = "",
-  validators = [],
+  validator,
   validateOn = "onBlur",
 }: UseInputOptions): InputController {
   const [text, setText] = useState(initialValue);
   const [error, setError] = useState<string | null>(null);
 
   function runValidation(v: string) {
-    for (const validator of validators) {
-      const err = validator(v);
-      if (err) {
-        setError(err);
-        return err;
-      }
+    if (!validator) return null;
+
+    const result = validator.safeParse(v);
+    if (!result.success) {
+      const errMessage = result.error.errors[0]?.message || "Invalid input";
+      setError(errMessage);
+      return errMessage;
     }
     setError(null);
     return null;
@@ -39,7 +41,7 @@ function useInput({
   function onChange(e: React.ChangeEvent<HTMLInputElement, HTMLElement>) {
     const v = e.target.value;
     setText(v);
-    if (validateOn == "onChange") runValidation(v);
+    if (error || validateOn == "onChange") runValidation(v);
   }
 
   function reset() {
@@ -48,6 +50,7 @@ function useInput({
   }
 
   return {
+    setError,
     validate,
     error,
     text,

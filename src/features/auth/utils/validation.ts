@@ -1,11 +1,3 @@
-export function validatePassword(v: string) {
-    for (const rule of passwordRules) {
-        if (rule.isInvalid(v)) {
-            return rule.message;
-        }
-    }
-    return null;
-}
 
 export const isTooShort = (v: string) => v.length < 8;
 export const missingUppercase = (v: string) => !/[A-Z]/.test(v);
@@ -34,13 +26,3 @@ export const passwordRules: PasswordRule[] = [
         isInvalid: missingNumber,
     },
 ];
-
-export function isStringEmpty(v: string) {
-    if (v === "") return "Field cannot be empty.";
-    return null;
-}
-
-export function isValidEmail(v: string) {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return !emailRegex.test(v) ? "Invalid email" : null;
-}

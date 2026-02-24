@@ -1,39 +1,33 @@
 import TextField from "@shared/components/common/TextField.tsx";
 import useInput from "@shared/hooks/useInput.tsx";
-import PasswordField from "../components/PasswordField.tsx";
 import Button from "@shared/components/common/Button.tsx";
-import useRegistration from "../hooks/useRegistration.tsx";
-import {
-  isStringEmpty,
-  isValidEmail,
-  validatePassword,
-} from "../utils/validation.ts";
-import PasswordChecklist from "../components/PasswordChecklist.tsx";
 import { useToast } from "@shared/hooks/useToast.tsx";
+import PasswordField from "../components/PasswordField.tsx";
+import useRegistration from "../hooks/useRegistration.tsx";
+import PasswordChecklist from "../components/PasswordChecklist.tsx";
+import { SignupSchema } from "../schema/authSchema.ts";
 
 function SignupForm() {
   const { signup, loading } = useRegistration();
   const { showToast } = useToast();
-  const name = useInput({ validators: [isStringEmpty] });
-  const email = useInput({ validators: [isStringEmpty, isValidEmail] });
+  const signupShape = SignupSchema.innerType().shape;
+  const name = useInput({ validator: signupShape.name });
+  const email = useInput({ validator: signupShape.email });
 
-  const password = useInput({ validators: [isStringEmpty, validatePassword] });
-  const passwordMatch = (v: string) =>
-    v !== password.text ? "Passwords do not match." : null;
+  const password = useInput({ validator: signupShape.password });
   const confirmPassword = useInput({
-    validators: [isStringEmpty, passwordMatch],
-    validateOn: "onChange",
+    validator: signupShape.confirmPassword,
   });
 
   const onSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
-    const nameError = name.validate();
-    const emailError = email.validate();
-    const passwordError = password.validate();
-    const confirmPasswordError = confirmPassword.validate();
-
-    if (nameError || emailError || passwordError || confirmPasswordError) {
-      return;
+    const inputs = [name, email, password, confirmPassword];
+    for (let input of inputs) {
+      const error = input.validate();
+      if (error) {
+        showToast(error);
+        return;
+      }
     }
 
     try {
@@ -43,7 +37,7 @@ function SignupForm() {
         password: password.text,
       });
     } catch {
-      showToast("Sign Up failed. Please try again.", "error");
+      showToast("Signup failed. Please try again.", "error");
     }
   };
 
@@ -78,7 +72,7 @@ function SignupForm() {
           onChange={password.onChange}
           error={password.error}
         />
-        <PasswordChecklist value={password.text} />
+        <PasswordChecklist text={password.text} />
         <PasswordField
           id="ConfirmPassField"
           placeholder="Confirm Password"
@@ -87,7 +81,7 @@ function SignupForm() {
           error={confirmPassword.error}
           onBlur={confirmPassword.validate}
         />
-        <Button type="submit" isLoading={loading}>
+        <Button type="submit" disabled={loading}>
           Submit
         </Button>
       </fieldset>

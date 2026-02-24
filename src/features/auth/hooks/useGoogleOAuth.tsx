@@ -1,5 +1,5 @@
 import type { User } from "@shared/types/user.ts";
-import fetchHandler from "@shared/utils/fetchHandler.ts";
+import { fetchHandler } from "@shared/utils/fetchHandler.ts";
 import useAsync from "@shared/hooks/useAsync.tsx";
 
 function useGoogleOAuth() {

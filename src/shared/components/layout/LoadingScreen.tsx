@@ -1,5 +1,11 @@
+import LoadingComponent from "../common/LoadingComponent.tsx";
+
 function LoadingScreen() {
-  return <div>Loading...</div>;
+  return (
+    <div className="flex items-center justify-center h-screen text-primary">
+      <LoadingComponent />
+    </div>
+  );
 }
 
 export default LoadingScreen;
