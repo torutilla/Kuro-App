@@ -15,10 +15,9 @@ function TextField({ error, label, children, ...props }: TextFieldProps) {
         <input
           {...props}
           className={clsx(
-            "relative w-full rounded-lg p-2 no-default-appearance",
-            "border",
-            "selection:bg-secondary selection:text-white",
-            "focus:outline focus:ring-1",
+            `relative w-full rounded-lg p-2 no-default-appearance
+            border selection:bg-secondary selection:text-white
+            focus:outline focus:ring-1`,
             {
               "bg-error/20 placeholder:text-error/20 focus:ring-error text-error border-error/20":
                 !!error,

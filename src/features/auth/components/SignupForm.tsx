@@ -5,87 +5,60 @@ import { useToast } from "@shared/hooks/useToast.tsx";
 import PasswordField from "../components/PasswordField.tsx";
 import useRegistration from "../hooks/useRegistration.tsx";
 import PasswordChecklist from "../components/PasswordChecklist.tsx";
-import { SignupSchema } from "../schema/authSchema.ts";
+import { SignupSchema, type SignupType } from "../schema/authSchema.ts";
+import Form from "./Form.tsx";
+import { useZodValidation } from "../hooks/useZodValidation.tsx";
+import type { User } from "@shared/index.ts";
 
-function SignupForm() {
+function SignupForm({ onSuccess }: { onSuccess?: (user: User) => void }) {
   const { signup, loading } = useRegistration();
   const { showToast } = useToast();
-  const signupShape = SignupSchema.innerType().shape;
-  const name = useInput({ validator: signupShape.name });
-  const email = useInput({ validator: signupShape.email });
+  const shape = SignupSchema.innerType().shape;
+  const controllers = {
+    name: useInput({ validator: shape.name }),
+    email: useInput({ validator: shape.email }),
+    password: useInput({ validator: shape.password }),
+    confirmPassword: useInput({ validator: shape.confirmPassword }),
+  };
+  const { name, email, password, confirmPassword } = controllers;
 
-  const password = useInput({ validator: signupShape.password });
-  const confirmPassword = useInput({
-    validator: signupShape.confirmPassword,
-  });
+  const { validate } = useZodValidation<SignupType>(SignupSchema, controllers);
 
   const onSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
-    const inputs = [name, email, password, confirmPassword];
-    for (let input of inputs) {
-      const error = input.validate();
-      if (error) {
-        showToast(error);
-        return;
-      }
+    const { errors, data, success } = validate();
+    if (!success) {
+      showToast(errors[0].message);
+      return;
     }
 
     try {
-      await signup({
-        email: email.text,
-        name: name.text,
-        password: password.text,
+      const user = await signup({
+        email: data.email,
+        name: data.name,
+        password: data.password,
       });
+      onSuccess?.(user);
     } catch {
       showToast("Signup failed. Please try again.", "error");
     }
   };
 
   return (
-    <form className="w-full h-full" onSubmit={onSubmit}>
-      <fieldset
-        disabled={loading}
-        className="grid grid-rows-6 h-full w-full items-center gap-1"
-      >
-        <TextField
-          error={name.error}
-          placeholder="Name"
-          type="text"
-          id="NameField"
-          value={name.text}
-          onChange={name.onChange}
-          onBlur={name.validate}
-        />
-        <TextField
-          error={email.error}
-          placeholder="Email"
-          type="text"
-          id="EmailField"
-          value={email.text}
-          onChange={email.onChange}
-          onBlur={email.validate}
-        />
-        <PasswordField
-          id="PasswordField"
-          placeholder="Password"
-          value={password.text}
-          onChange={password.onChange}
-          error={password.error}
-        />
-        <PasswordChecklist text={password.text} />
-        <PasswordField
-          id="ConfirmPassField"
-          placeholder="Confirm Password"
-          value={confirmPassword.text}
-          onChange={confirmPassword.onChange}
-          error={confirmPassword.error}
-          onBlur={confirmPassword.validate}
-        />
-        <Button type="submit" disabled={loading}>
-          Submit
-        </Button>
-      </fieldset>
-    </form>
+    <Form disabled={loading} onSubmit={onSubmit}>
+      <TextField placeholder="Name" type="text" id="NameField" {...name} />
+      <TextField placeholder="Email" type="text" id="EmailField" {...email} />
+      <PasswordField id="PasswordField" placeholder="Password" {...password} />
+      <PasswordChecklist text={password.value} />
+      <PasswordField
+        id="ConfirmPassField"
+        placeholder="Confirm Password"
+        {...confirmPassword}
+      />
+      <Button type="submit" disabled={loading}>
+        Submit
+      </Button>
+    </Form>
   );
 }
 

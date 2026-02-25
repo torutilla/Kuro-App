@@ -10,17 +10,18 @@ type UseInputOptions = {
 type InputController = {
   validate: () => string | null;
   error: string | null;
-  text: string;
+  value: string;
   setError: (msg: string | null) => void;
   onChange: (e: React.ChangeEvent<HTMLInputElement, HTMLElement>) => void;
   reset: () => void;
+  onBlur: () => void;
 };
 function useInput({
   initialValue = "",
   validator,
   validateOn = "onBlur",
 }: UseInputOptions): InputController {
-  const [text, setText] = useState(initialValue);
+  const [value, setValue] = useState(initialValue);
   const [error, setError] = useState<string | null>(null);
 
   function runValidation(v: string) {
@@ -35,25 +36,29 @@ function useInput({
     setError(null);
     return null;
   }
+  function onBlur() {
+    runValidation(value);
+  }
   function validate() {
-    return runValidation(text);
+    return runValidation(value);
   }
   function onChange(e: React.ChangeEvent<HTMLInputElement, HTMLElement>) {
     const v = e.target.value;
-    setText(v);
+    setValue(v);
     if (error || validateOn == "onChange") runValidation(v);
   }
 
   function reset() {
-    setText(initialValue);
+    setValue(initialValue);
     setError(null);
   }
 
   return {
+    onBlur,
     setError,
     validate,
     error,
-    text,
+    value,
     onChange,
     reset,
   };

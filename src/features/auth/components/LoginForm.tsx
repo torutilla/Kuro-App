@@ -6,33 +6,33 @@ import type { User } from "@shared/types/user.ts";
 import Button from "@shared/components/common/Button.tsx";
 import TextField from "@shared/components/common/TextField.tsx";
 import { useToast } from "@shared/hooks/useToast.tsx";
-import { LoginSchema } from "../schema/authSchema.ts";
+import { LoginSchema, type LoginType } from "../schema/authSchema.ts";
+import { useZodValidation } from "../hooks/useZodValidation.tsx";
 
 type LoginFormProps = {
   onSuccess?: (user: User) => void;
 };
 
 function LoginForm({ onSuccess }: LoginFormProps) {
-  const email = useInput({
-    validator: LoginSchema.shape.email,
-    validateOn: "onChange",
-  });
-  const password = useInput({ validator: LoginSchema.shape.password });
+  const shape = LoginSchema.shape;
+  const controllers = {
+    password: useInput({ validator: shape.password }),
+    email: useInput({ validator: shape.email }),
+  };
+  const { email, password } = controllers;
+  const { validate } = useZodValidation<LoginType>(LoginSchema, controllers);
   const { showToast } = useToast();
   const { login, loading } = useLogin();
   const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
-    const inputs = [email, password];
-    for (let input of inputs) {
-      const error = input.validate();
-      if (error) {
-        showToast(error);
-        return;
-      }
+    const { success, data, errors } = validate();
+    if (!success) {
+      showToast(errors[0].message);
+      return;
     }
     try {
-      const data = await login(email.text, password.text);
-      onSuccess?.(data);
+      const user = await login(data.email, data.password);
+      onSuccess?.(user);
     } catch {
       showToast("Login failed. Please try again.");
     }
@@ -41,26 +41,19 @@ function LoginForm({ onSuccess }: LoginFormProps) {
     <form className="w-full h-full" onSubmit={handleSubmit}>
       <fieldset
         disabled={loading}
-        className="grid grid-rows-[1fr_1fr_auto_1fr] gap-2 h-full w-full items-center"
+        className="flex flex-col justify-evenly gap-2 h-full w-full items-center"
       >
-        <TextField
-          error={email.error}
-          id="email-field"
-          value={email.text}
-          onChange={email.onChange}
-          placeholder="Email"
-          onBlur={email.validate}
-        />
+        <TextField id="email-field" placeholder="Email" {...email} />
         <PasswordField
           autoComplete="current-password"
           id="password-field"
-          value={password.text}
-          onChange={password.onChange}
           placeholder="Password"
-          error={password.error}
-          onBlur={password.validate}
+          {...password}
         />
-        <Link to="/forgot-password" className="text-sm text-primary w-fit">
+        <Link
+          to="/forgot-password"
+          className="text-sm text-primary w-fit self-end"
+        >
           Forgot Password?
         </Link>
         <Button disabled={loading} type="submit">

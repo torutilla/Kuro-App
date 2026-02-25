@@ -7,7 +7,7 @@ type ChecklistItemProps = {
 function PasswordChecklistItem({ type, description }: ChecklistItemProps) {
   return (
     <div
-      className={clsx("flex gap-1 text-sm items-center", {
+      className={clsx("flex gap-1 text-xs items-center", {
         "text-error": type == "error",
         "text-success": type == "success",
       })}

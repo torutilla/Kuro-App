@@ -3,7 +3,7 @@ import PasswordChecklistItem from "./PasswordChecklistItem.tsx";
 
 function PasswordChecklist({ text }: { text: string }) {
   return (
-    <div className="grid grid-cols-2">
+    <div className="grid grid-cols-2 w-full">
       {passwordRules.map((rule) => {
         const invalid = rule.isInvalid(text);
         return (
