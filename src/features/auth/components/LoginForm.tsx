@@ -8,6 +8,7 @@ import TextField from "@shared/components/common/TextField.tsx";
 import { useToast } from "@shared/hooks/useToast.tsx";
 import { LoginSchema, type LoginType } from "../schema/authSchema.ts";
 import { useZodValidation } from "../hooks/useZodValidation.tsx";
+import Form from "./Form.tsx";
 
 type LoginFormProps = {
   onSuccess?: (user: User) => void;
@@ -38,29 +39,24 @@ function LoginForm({ onSuccess }: LoginFormProps) {
     }
   };
   return (
-    <form className="w-full h-full" onSubmit={handleSubmit}>
-      <fieldset
-        disabled={loading}
-        className="flex flex-col justify-evenly gap-2 h-full w-full items-center"
+    <Form onSubmit={handleSubmit} disabled={loading}>
+      <TextField id="email-field" placeholder="Email" {...email} />
+      <PasswordField
+        autoComplete="current-password"
+        id="password-field"
+        placeholder="Password"
+        {...password}
+      />
+      <Link
+        to="/forgot-password"
+        className="text-sm text-primary w-fit self-end"
       >
-        <TextField id="email-field" placeholder="Email" {...email} />
-        <PasswordField
-          autoComplete="current-password"
-          id="password-field"
-          placeholder="Password"
-          {...password}
-        />
-        <Link
-          to="/forgot-password"
-          className="text-sm text-primary w-fit self-end"
-        >
-          Forgot Password?
-        </Link>
-        <Button disabled={loading} type="submit">
-          Login
-        </Button>
-      </fieldset>
-    </form>
+        Forgot Password?
+      </Link>
+      <Button disabled={loading} type="submit">
+        Login
+      </Button>
+    </Form>
   );
 }
 

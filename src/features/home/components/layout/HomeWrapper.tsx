@@ -1,5 +1,5 @@
 import Home from "../../pages/Home.tsx";
-import Navbar from "./NavBar.tsx";
+import Navbar from "./Navbar.tsx";
 
 function HomeWrapper() {
   return (

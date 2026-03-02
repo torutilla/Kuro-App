@@ -5,13 +5,14 @@ import LoadingComponent from "./LoadingComponent.tsx";
 const buttonVariants = cva(
   `min-h-8 rounded-xl p-1 w-full shrink-0
   flex items-center justify-center text-sm
-  cursor-pointer disabled:cursor-not-allowed`,
+  cursor-pointer disabled:cursor-not-allowed
+  disabled:opacity-85`,
   {
     variants: {
       variant: {
-        solid: "text-white hover:brightness-90",
+        solid: "text-white hover:brightness-85 ",
         outline: "bg-transparent border",
-        icon: "bg-transparent hover:brightness-90",
+        icon: "bg-transparent hover:brightness-85",
       },
       color: {
         primary: "",
@@ -33,11 +34,11 @@ const buttonVariants = cva(
       {
         variant: "solid",
         color: "black",
-        className: "bg-dark",
+        className: "bg-black",
       },
       { variant: "icon", color: "primary", className: "text-primary" },
       { variant: "icon", color: "secondary", className: "text-secondary" },
-      { variant: "icon", color: "black", className: "text-dark" },
+      { variant: "icon", color: "black", className: "text-black" },
       {
         variant: "outline",
         color: "primary",
@@ -51,7 +52,7 @@ const buttonVariants = cva(
       {
         variant: "outline",
         color: "black",
-        className: "border-dark text-dark hover:bg-neutral-400/10",
+        className: "border-black text-black hover:bg-neutral-400/20",
       },
     ],
     defaultVariants: {

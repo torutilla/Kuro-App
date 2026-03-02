@@ -2,14 +2,14 @@
 @import "leaflet/dist/leaflet.css";
 
 @theme static {
-  --color-primary: rgb(145, 47, 86);
-  --color-secondary: rgb(82, 25, 69);
-  --color-accent: rgb(54, 31, 39);
-  --color-dark: rgb(13, 9, 10);
-  --color-white: rgb(248, 249, 250);
-
-  --color-success: rgb(17, 190, 17);
-  --color-error: rgb(201, 8, 8);
+  --color-primary: #1e3a8a;
+  --color-secondary: #1b263bff;
+  --color-accent: #415a77ff;
+  --color-black: rgb(29, 29, 29);
+  --color-white: rgb(235, 235, 235);
+  --color-card: rgb(245, 245, 245);
+  --color-success: #16a34a;
+  --color-error: #dc2626;
 
   --size-sm: clamp(8px, 6vw, 16px);
   --size-md: clamp(16px, 8vw, 32px);
@@ -49,6 +49,7 @@ input:focus {
 }
 
 .auth-page {
+  background-color: var(--color-white);
   width: 100vw;
   height: 100vh;
   display: flex;
@@ -57,7 +58,8 @@ input:focus {
 }
 
 .auth-card {
-  background-color: var(--color-white);
+  border: 0.15px solid var(--color-neutral-200);
+  background-color: var(--color-card);
   max-width: 28rem;
   max-height: 600px;
   width: 100%;
@@ -75,6 +77,10 @@ input:focus {
 
 .auth-card.signup {
   grid-template-rows: auto 1fr;
+}
+
+.home-grid {
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
 }
 
 .toast.in {
