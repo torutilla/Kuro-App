@@ -27,5 +27,11 @@ export const PetResponseSchema = z.object({
     nextCursor: cursorSchema,
 })
 
+export const PostPetSchema = PetSchema.omit({
+    id: true
+});
+
+
+export type PostPet = z.infer<typeof PostPetSchema>;
 export type PetResponse = z.infer<typeof PetResponseSchema>;
 export type Pet = z.infer<typeof PetSchema>

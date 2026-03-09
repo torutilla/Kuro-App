@@ -7,6 +7,9 @@ export async function fetchHandler<T>(
 ): Promise<T> {
     const response = await fetch(`${API_BASE_URL}${path}`, {
         ...reqInit,
+        headers: {
+            "Content-Type": "application/json",
+        },
         credentials: "include",
     });
 

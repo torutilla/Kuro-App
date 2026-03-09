@@ -11,7 +11,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         solid: "text-white hover:brightness-85 ",
-        outline: "bg-transparent border",
+        outline: "bg-transparent border hover:bg-primary/5",
         icon: "bg-transparent hover:brightness-85",
       },
       color: {

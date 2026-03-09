@@ -6,7 +6,7 @@ function PublicRoute() {
   const { user, loading } = useAuth();
 
   if (loading) return <LoadingScreen />;
-  if (user) return <Navigate to="/" replace />;
+  if (user) return <Navigate to="/home" replace />;
   return <Outlet />;
 }
 

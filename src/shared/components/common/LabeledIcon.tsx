@@ -4,7 +4,7 @@ type LabeledIconProps = {
 };
 function LabeledIcon({ icon, label }: LabeledIconProps) {
   return (
-    <div className="flex gap-1 text-sm">
+    <div className="flex gap-1 items-center">
       {icon}
       <p>{label}</p>
     </div>
