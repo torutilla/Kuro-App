@@ -1,6 +1,6 @@
 import TextField from "@shared/components/common/TextField.tsx";
 import usePostPet from "../../hooks/usePostPet.tsx";
-import { PostPetSchema } from "../../schema/petSchema.ts";
+import { PetRequestSchema } from "../../schema/petSchema.ts";
 import Button from "@shared/components/common/Button.tsx";
 
 function PostPetForm({
@@ -30,7 +30,7 @@ function PostPetForm({
       date_lost: new Date(formData.get("date_lost") as string).toISOString(),
     };
 
-    const res = PostPetSchema.safeParse(payload);
+    const res = PetRequestSchema.safeParse(payload);
 
     if (!res.success) {
       console.log(res.error.issues);
@@ -48,7 +48,7 @@ function PostPetForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className="mx-auto p-6 bg-white rounded-xl shadow-sm border border-neutral-100"
+      className=" p-6 bg-white rounded-xl shadow-sm border border-neutral-100"
     >
       <h2 className="text-2xl font-bold text-accent mb-6">Report a Pet</h2>
 

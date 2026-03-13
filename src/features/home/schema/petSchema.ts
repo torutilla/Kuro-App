@@ -7,31 +7,33 @@ export const PetSchema = z.object({
     user_id: z.string().uuid(),
     name: z.string().min(1),
     type: z.string().min(1),
-    breed: z.string().optional(),
+    breed: z.string().optional().nullable(),
     color: z.string(),
     description: z.string(),
     image_url: z.string().url(),
     status: petStatusSchema,
     last_seen_location: z.string(),
-    date_lost: z.string().datetime(),
+    date_lost: z.coerce.date(),
+    location_point: z.object({
+        lat: z.number(),
+        lng: z.number(),
+    }).optional().nullable(),
 });
 
 export const cursorSchema = z.object({
     lastId: z.string().optional(),
-    lastDateLost: z.string().optional(),
+    lastDateLost: z.date(),
 }).nullable().optional();
 
-
-export const PetResponseSchema = z.object({
+export const PetArraySchema = z.object({
     pets: z.array(PetSchema),
     nextCursor: cursorSchema,
-})
+});
 
-export const PostPetSchema = PetSchema.omit({
+export const PetRequestSchema = PetSchema.omit({
     id: true
 });
 
-
-export type PostPet = z.infer<typeof PostPetSchema>;
-export type PetResponse = z.infer<typeof PetResponseSchema>;
+export type PetRequest = z.infer<typeof PetRequestSchema>;
+export type PetArrayResponse = z.infer<typeof PetArraySchema>;
 export type Pet = z.infer<typeof PetSchema>

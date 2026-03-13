@@ -1,11 +1,14 @@
+import type { OverridableComponent } from "@mui/material/OverridableComponent";
+import type { SvgIconTypeMap } from "@mui/material/SvgIcon";
+
 type LabeledIconProps = {
-  icon: React.ReactNode;
+  icon: OverridableComponent<SvgIconTypeMap<{}, "svg">>;
   label: string;
 };
-function LabeledIcon({ icon, label }: LabeledIconProps) {
+function LabeledIcon({ icon: Icon, label }: LabeledIconProps) {
   return (
     <div className="flex gap-1 items-center">
-      {icon}
+      <Icon fontSize="inherit" />
       <p>{label}</p>
     </div>
   );
