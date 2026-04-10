@@ -14,8 +14,13 @@
   --size-sm: clamp(8px, 6vw, 16px);
   --size-md: clamp(16px, 8vw, 32px);
   --size-lg: clamp(32px, 12vw, 64px);
+
+  --breakpoint-mobilelg: 500px;
 }
 
+button:hover {
+  cursor: pointer;
+}
 p::selection,
 h1::selection,
 a::selection {

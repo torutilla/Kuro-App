@@ -4,13 +4,14 @@ import { useMapProvider } from "./MapProvider";
 
 function MapController() {
   const map = useMap();
-  const { flyToTarget, setFlyToTarget } = useMapProvider();
+  const { flyToTarget } = useMapProvider();
 
   useEffect(() => {
     if (flyToTarget) {
-      map.flyTo(flyToTarget, 12, { duration: 1, easeLinearity: 1 });
+      map.flyTo(flyToTarget, 14, { duration: 1, easeLinearity: 1 });
+      console.log(`to: ${flyToTarget}`);
     }
-  }, [flyToTarget, map, setFlyToTarget]);
+  }, [flyToTarget, map]);
 
   return null;
 }

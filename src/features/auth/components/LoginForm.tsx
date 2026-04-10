@@ -53,7 +53,8 @@ function LoginForm({ onSuccess }: LoginFormProps) {
       >
         Forgot Password?
       </Link>
-      <Button disabled={loading} type="submit">
+
+      <Button disabled={loading} type="submit" className="w-full">
         Login
       </Button>
     </Form>

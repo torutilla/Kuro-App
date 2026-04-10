@@ -1,7 +1,7 @@
 import { cn } from "@shared/index.ts";
 import Button from "@shared/components/common/Button.tsx";
 import LabeledIcon from "@shared/components/common/LabeledIcon.tsx";
-import { AccessTime, DateRange, LocationOn } from "@mui/icons-material";
+import { AccessTime, LocationOn } from "@mui/icons-material";
 import samp from "@assets/sample.jpg";
 import type { Pet } from "../../schema/petSchema.ts";
 import PetBadge from "./PetBadge.tsx";
@@ -34,33 +34,47 @@ function PetCard({ pet }: PetCardProps) {
           "border-neutral-200 group-hover:border-primary/50 group-hover:shadow-md",
         )}
       >
-        <Image
-          alt={pet.name}
-          fallback={samp}
-          className="w-full object-cover aspect-video"
-          src={pet.image_url}
-        />
-        <div className="flex flex-col justify-between p-3 gap-2">
-          <div className="grid grid-rows-[auto_auto_auto] gap-1">
-            <div className="flex justify-between">
-              <p className="font-bold text-lg text-primary">{pet.name}</p>
-              <PetBadge status={pet.status} />
+        <div className="relative aspect-16/10 overflow-hidden">
+          <Image
+            alt={pet.name}
+            src={pet.image_url}
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+          <div className="absolute right-3 top-3">
+            <PetBadge status={pet.status} />
+          </div>
+        </div>
+
+        <div className="flex flex-1 flex-col p-4">
+          {/* Info Section */}
+          <div className="flex flex-col gap-1.5">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-bold tracking-tight text-primary">
+                {pet.name}
+              </h3>
             </div>
-            <div className="text-sm text-neutral-600">
+
+            <div className="flex flex-col gap-0.5 text-sm">
               <LabeledIcon icon={LocationOn} label={pet.last_seen_location} />
               <LabeledIcon
                 icon={AccessTime}
                 label={formatTimeAgo(pet.date_lost)}
               />
             </div>
-            <div className="my-2">
+
+            <div className="py-1">
               <Divider />
             </div>
-            <p className="line-clamp-3 text-wrap min-h-12">{pet.description}</p>
+
+            <p className="line-clamp-2 min-h-12 text-sm leading-relaxed text-neutral-600">
+              {pet.description}
+            </p>
           </div>
-          <Button variant="solid" onClick={handleMapClick}>
-            View in Map
-          </Button>
+
+          {/* Action Section */}
+          <div className="mt-2 flex justify-start">
+            <Button onClick={handleMapClick}>Locate on Map</Button>
+          </div>
         </div>
       </div>
     </Link>

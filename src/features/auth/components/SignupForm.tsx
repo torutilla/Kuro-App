@@ -55,7 +55,7 @@ function SignupForm({ onSuccess }: { onSuccess?: (user: User) => void }) {
         placeholder="Confirm Password"
         {...confirmPassword}
       />
-      <Button type="submit" disabled={loading}>
+      <Button type="submit" disabled={loading} className="w-full">
         Submit
       </Button>
     </Form>

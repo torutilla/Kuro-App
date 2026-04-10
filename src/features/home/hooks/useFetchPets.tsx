@@ -14,10 +14,35 @@ function useFetchPets() {
 
     const res = await run(() => fetchHandler(query));
     if (!res) return;
-    setPets((p) => [...p, ...res.pets]);
+
+    mergePets(res.pets);
     setCursor(res.nextCursor);
   };
-  return { pets, loadMore, loading, hasMore: cursor !== null };
+  const addPet = (newPet: Pet) => {
+    setPets((prev) => {
+      if (prev.some((p) => p.id === newPet.id)) return prev;
+      return [newPet, ...prev];
+    });
+  };
+  const mergePets = (incoming: Pet[]) => {
+    setPets((prev) => {
+      const map = new Map(prev.map((p) => [p.id, p]));
+      incoming.forEach((p) => map.set(p.id, p));
+
+      return Array.from(map.values()).sort(
+        (a, b) =>
+          new Date(b.date_lost).getTime() - new Date(a.date_lost).getTime(),
+      );
+    });
+  };
+  return {
+    pets,
+    loadMore,
+    loading,
+    hasMore: cursor !== null,
+    addPet,
+    mergePets,
+  };
 }
 
 export default useFetchPets;

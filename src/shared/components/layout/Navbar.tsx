@@ -1,8 +1,13 @@
+import DesktopSidebar from "./DesktopSidebar.tsx";
+import MobileNavbar from "./MobileNavbar.tsx";
+
 function Navbar() {
   return (
-    <nav className="w-full bg-primary sticky h-fit inset-0 flex justify-center items-center z-99">
-      Kuro
-    </nav>
+    <>
+      <DesktopSidebar />
+
+      <MobileNavbar />
+    </>
   );
 }
 

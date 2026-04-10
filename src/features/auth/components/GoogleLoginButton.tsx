@@ -15,12 +15,13 @@ function GoogleLoginButton({ onSuccess }: GoogleLoginButtonProps) {
   };
   return (
     <Button
+      className="w-full"
       color="black"
       variant="outline"
       onClick={handleClick}
       disabled={loading}
     >
-      <img src={GoogleSvg} className="p-1" />
+      <img src={GoogleSvg} className="p-0.5" />
       <p>Sign in with Google</p>
     </Button>
   );

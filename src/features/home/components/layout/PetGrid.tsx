@@ -7,14 +7,8 @@ type PetGridProps = {
 };
 function PetGrid({ pets }: PetGridProps) {
   return (
-    <div className="">
-      <h1 className="m-2">Pet Listing</h1>
-      <div
-        className={cn(
-          "grid gap-4",
-          "grid-cols-[repeat(auto-fit,minmax(230px,1fr))] lg:grid-cols-[repeat(auto-fit,minmax(230px,300px))]",
-        )}
-      >
+    <div>
+      <div className={cn("grid gap-4 grid-cols-1 mobilelg:grid-cols-2")}>
         {pets.map((pet, index) => {
           const validatedPet = PetSchema.parse(pet);
           return <PetCard key={validatedPet.id + index} pet={validatedPet} />;

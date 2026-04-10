@@ -3,7 +3,7 @@ import { cn } from "@shared/index.ts";
 import LoadingComponent from "./LoadingComponent.tsx";
 
 const buttonVariants = cva(
-  `min-h-8 rounded-xl p-1 w-full shrink-0
+  `min-h-8 rounded-xl p-2 px-4 w-auto shrink-0
   flex items-center justify-center text-sm
   cursor-pointer disabled:cursor-not-allowed
   disabled:opacity-85`,
@@ -18,6 +18,7 @@ const buttonVariants = cva(
         primary: "",
         secondary: "",
         black: "",
+        grayscale: "",
       },
     },
     compoundVariants: [
@@ -36,9 +37,15 @@ const buttonVariants = cva(
         color: "black",
         className: "bg-black",
       },
+      {
+        variant: "solid",
+        color: "grayscale",
+        className: "bg-neutral-300 text-black",
+      },
       { variant: "icon", color: "primary", className: "text-primary" },
       { variant: "icon", color: "secondary", className: "text-secondary" },
       { variant: "icon", color: "black", className: "text-black" },
+
       {
         variant: "outline",
         color: "primary",
@@ -54,6 +61,11 @@ const buttonVariants = cva(
         color: "black",
         className: "border-black text-black hover:bg-neutral-400/20",
       },
+      {
+        variant: "outline",
+        color: "grayscale",
+        className: "border-neutral-300 text-black",
+      },
     ],
     defaultVariants: {
       variant: "solid",
@@ -65,6 +77,7 @@ type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> &
   VariantProps<typeof buttonVariants>;
 
 function Button({
+  className,
   type = "button",
   variant = "solid",
   color = "primary",
@@ -75,8 +88,8 @@ function Button({
   return (
     <button
       type={type}
-      className={cn(buttonVariants({ color, variant }))}
       {...props}
+      className={cn(buttonVariants({ color, variant }), className)}
     >
       {disabled ? <LoadingComponent /> : children}
     </button>
