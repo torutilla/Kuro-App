@@ -3,12 +3,14 @@ import NavItem from "../common/NavItem.tsx";
 import ProfileTab from "../common/ProfileTab.tsx";
 import { Home, Message, Pets } from "@mui/icons-material";
 import { useLocation, useNavigate } from "react-router-dom";
+import useLogout from "@features/auth/hooks/useLogout.tsx";
 
 function DesktopSidebar() {
   const { user } = useAuth();
   if (!user) return;
   const navigate = useNavigate();
   const location = useLocation();
+  const logout = useLogout();
   return (
     <nav className="hidden lg:flex fixed top-0 left-0 h-full w-56 bg-primary flex-col py-6 px-4 z-50 shadow-xl">
       <h1 className="mb-10 text-xl font-bold text-white">Kuro</h1>
@@ -34,7 +36,7 @@ function DesktopSidebar() {
         />
       </div>
 
-      <ProfileTab name={user.name} email={user.email} />
+      <ProfileTab name={user.name} email={user.email} onLogout={logout} />
     </nav>
   );
 }

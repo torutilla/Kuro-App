@@ -2,6 +2,9 @@ import TextField from "@shared/components/common/TextField.tsx";
 import usePostPet from "../../hooks/usePostPet.tsx";
 import { PetRequestSchema } from "../../schema/petSchema.ts";
 import Button from "@shared/components/common/Button.tsx";
+import MapPicker from "@features/map/components/MapPicker.tsx";
+import { useState } from "react";
+import type { LatLngTuple } from "leaflet";
 
 function PostPetForm({
   authUserId,
@@ -11,7 +14,7 @@ function PostPetForm({
   onSuccess?: (id: string) => void;
 }) {
   const { postPet, loading, error } = usePostPet();
-
+  const [coords, setCoords] = useState<LatLngTuple | null>(null);
   const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -27,6 +30,12 @@ function PostPetForm({
       image_url: formData.get("image_url"),
       status: formData.get("status"),
       last_seen_location: formData.get("last_seen_location"),
+      location_point: coords
+        ? {
+            lat: coords[0],
+            lng: coords[1],
+          }
+        : null,
       date_lost: new Date(formData.get("date_lost") as string).toISOString(),
     };
 
@@ -121,6 +130,8 @@ function PostPetForm({
           required
         ></textarea>
       </div>
+
+      <MapPicker value={coords} onChange={setCoords} />
 
       {error && <p className="text-error text-sm mt-2">{error}</p>}
 
