@@ -47,13 +47,14 @@ function ProfilePage() {
       </button>
 
       <div className="profile-item mt-6 overflow-hidden rounded-3xl border border-neutral-200 bg-white shadow-sm">
-        <div className="grain relative h-28 overflow-hidden bg-gradient-to-br from-primary via-primary to-secondary">
+        <div className="grain relative h-24 overflow-hidden bg-gradient-to-br from-primary via-primary to-secondary">
           <div className="pointer-events-none absolute -top-10 right-8 h-36 w-36 rounded-full bg-white/10 blur-2xl" />
         </div>
 
-        <div className="px-6 pb-8 lg:px-10">
-          <div className="-mt-10 flex items-end gap-4">
-            <div className="grid h-20 w-20 shrink-0 place-items-center overflow-hidden rounded-2xl bg-gradient-to-br from-white/25 to-white/5 text-3xl font-semibold text-white shadow-lg ring-4 ring-white">
+        <div className="px-6 pt-5 pb-8 lg:px-10">
+          {/* Identity sits fully below the banner so the cover never hides it. */}
+          <div className="flex items-center gap-4">
+            <div className="grid h-20 w-20 shrink-0 place-items-center overflow-hidden rounded-2xl bg-gradient-to-br from-primary/10 to-primary/5 text-3xl font-semibold text-secondary ring-1 ring-neutral-200">
               {user.avatar ? (
                 <img
                   src={user.avatar}
@@ -64,8 +65,8 @@ function ProfilePage() {
                 <span>{user.name.charAt(0).toUpperCase()}</span>
               )}
             </div>
-            <div className="pb-1">
-              <h1 className="font-display text-2xl font-semibold text-secondary">
+            <div className="min-w-0 flex-1">
+              <h1 className="truncate font-display text-2xl font-semibold text-secondary">
                 {user.name}
               </h1>
               <p className="text-sm text-neutral-500">{providerLabel}</p>

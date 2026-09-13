@@ -1,5 +1,6 @@
+import { useNavigate } from "react-router-dom";
 import Dropdown from "./DropdownButton.tsx";
-import { Logout, MoreHoriz } from "@mui/icons-material";
+import { Logout, MoreHoriz, PersonOutline } from "@mui/icons-material";
 
 type ProfileTabProps = {
   name: string;
@@ -8,9 +9,16 @@ type ProfileTabProps = {
   onLogout?: () => void;
 };
 
+/**
+ * Sidebar account card. Account actions live in the menu, which opens upward
+ * (above the tab) so it can't fall off the bottom of the viewport, and closes
+ * itself as soon as an option is picked.
+ */
 function ProfileTab({ name, email, avatarUrl, onLogout }: ProfileTabProps) {
+  const navigate = useNavigate();
   return (
     <div className="relative flex items-center justify-between gap-2 rounded-xl border border-white/5 bg-white/5 p-3 transition-colors hover:bg-white/10">
+      {/* Identity block: avatar + name + email. Actions live in the menu. */}
       <div className="flex min-w-0 flex-1 items-center gap-3">
         <div className="grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-full bg-gradient-to-br from-white/25 to-white/5 ring-1 ring-white/20">
           {avatarUrl ? (
@@ -26,17 +34,18 @@ function ProfileTab({ name, email, avatarUrl, onLogout }: ProfileTabProps) {
           )}
         </div>
 
-        <div className="flex min-w-0 flex-col">
-          <span className="truncate text-sm leading-tight font-semibold text-white">
+        <div className="flex min-w-0 flex-col items-start">
+          <span className="max-w-full truncate text-sm font-semibold leading-tight text-white">
             {name}
           </span>
-          <span className="truncate text-xs leading-tight text-white/60">
+          <span className="max-w-full truncate text-xs leading-tight text-white/60">
             {email}
           </span>
         </div>
       </div>
 
       <Dropdown
+        placement="top"
         trigger={
           <button
             aria-label="Account options"
@@ -46,6 +55,13 @@ function ProfileTab({ name, email, avatarUrl, onLogout }: ProfileTabProps) {
           </button>
         }
       >
+        <button
+          onClick={() => navigate("/profile")}
+          className="flex w-full items-center gap-2 px-4 py-2.5 text-left text-sm text-white/85 transition-colors hover:bg-white/10"
+        >
+          <PersonOutline fontSize="small" />
+          View profile
+        </button>
         <button
           onClick={onLogout}
           className="flex w-full items-center gap-2 px-4 py-2.5 text-left text-sm text-red-300 transition-colors hover:bg-white/10"
@@ -59,4 +75,3 @@ function ProfileTab({ name, email, avatarUrl, onLogout }: ProfileTabProps) {
 }
 
 export default ProfileTab;
-

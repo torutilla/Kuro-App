@@ -84,29 +84,28 @@ function Hero() {
       delay: tl.duration() - 0.4,
     });
 
-    // Scroll-triggered reveals for everything below the fold.
-    gsap.from(".steps-head", {
-      y: 34,
-      opacity: 0,
-      duration: 0.7,
-      ease: "power3.out",
-      scrollTrigger: { trigger: ".steps-head", start: "top 85%" },
-    });
-    gsap.from(".step-card", {
-      y: 40,
-      opacity: 0,
-      duration: 0.6,
-      ease: "power3.out",
-      stagger: 0.12,
-      scrollTrigger: { trigger: ".step-card", start: "top 88%" },
-    });
-    gsap.from(".cta-band", {
-      y: 40,
-      opacity: 0,
-      duration: 0.7,
-      ease: "power3.out",
-      scrollTrigger: { trigger: ".cta-band", start: "top 88%" },
-    });
+    // Scroll-triggered reveals for everything below the fold. Each element
+    // gets its own trigger with `once: true` so a reveal can never get
+    // "stuck" halfway or fail to fire.
+    const fromScroll = (selector: string, y = 40, start = "top 88%") =>
+      gsap.utils.toArray<HTMLElement>(selector).forEach((el, i) => {
+        gsap.fromTo(
+          el,
+          { y, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            duration: 0.7,
+            ease: "power3.out",
+            delay: i * 0.1,
+            scrollTrigger: { trigger: el, start, once: true },
+          },
+        );
+      });
+
+    fromScroll(".steps-head", 34, "top 85%");
+    fromScroll(".step-card", 48);
+    fromScroll(".cta-band", 40, "top 85%");
   }, []);
 
   useEffect(() => {
@@ -114,6 +113,16 @@ function Hero() {
     return () => {
       document.title = "Kuro — Reunite lost pets";
     };
+  }, []);
+
+  // Trigger positions are measured when the page mounts — before fonts and
+  // the hero image finish loading. Re-measuring on `load` keeps the scroll
+  // reveals from ending up stuck below the maximum scroll amount.
+  useEffect(() => {
+    const refresh = () => ScrollTrigger.refresh();
+    if (document.readyState === "complete") refresh();
+    else window.addEventListener("load", refresh);
+    return () => window.removeEventListener("load", refresh);
   }, []);
 
   return (

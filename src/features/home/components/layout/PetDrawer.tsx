@@ -38,11 +38,13 @@ function PetDrawer({ pets }: PetDrawerProps) {
           isOpen ? "translate-x-0" : "translate-x-full",
         )}
       >
-        {/* Desktop handle tab that rides along the panel's edge. */}
+        {/* Toggle tab that peeks from the panel's edge on every breakpoint. On
+        mobile the sheet starts fully off-screen to the right, so this tab —
+        visible at the screen edge — is the way in; the header ✕ closes it. */}
         <button
           onClick={onButtonClick}
           aria-label={isOpen ? "Hide pet list" : "Show pet list"}
-          className="absolute top-1/2 -left-9 hidden -translate-y-1/2 rounded-l-xl bg-primary p-2.5 text-white shadow-lg transition-transform duration-300 hover:-translate-x-0.5 lg:block"
+          className="absolute top-1/2 -left-9 block -translate-y-1/2 rounded-l-xl bg-primary p-3 text-white shadow-lg transition-transform duration-300 hover:-translate-x-0.5"
         >
           {isOpen ? (
             <ChevronRight fontSize="small" />
