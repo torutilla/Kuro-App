@@ -8,11 +8,14 @@ type AuthFooterProps = {
 };
 function AuthFooter({ link, label }: AuthFooterProps) {
   return (
-    <p>
+    <p className="text-center text-sm text-neutral-500">
       {label}
-      <span>
-        <Link to={link.to}>{link.label}</Link>
-      </span>
+      <Link
+        to={link.to}
+        className="link-underline font-medium text-primary transition-colors hover:text-primary/80"
+      >
+        {link.label}
+      </Link>
     </p>
   );
 }

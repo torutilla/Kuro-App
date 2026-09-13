@@ -1,6 +1,5 @@
 import { Popup } from "react-leaflet";
 
-type PopupCardProps = {};
 function PopupCard() {
   return (
     <Popup>

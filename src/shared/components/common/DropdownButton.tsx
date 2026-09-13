@@ -25,7 +25,7 @@ function Dropdown({ trigger, children }: DropdownProps) {
       <div onClick={() => setOpen((prev) => !prev)}>{trigger}</div>
 
       {open && (
-        <div className="absolute right-0 mt-2 w-40 bg-black/80 backdrop-blur-md rounded-lg shadow-lg border border-white/10 z-50">
+        <div className="dropdown-in absolute right-0 z-50 mt-2 w-44 origin-top-right overflow-hidden rounded-xl border border-white/10 bg-secondary/90 shadow-2xl backdrop-blur-md">
           {children}
         </div>
       )}
@@ -34,3 +34,4 @@ function Dropdown({ trigger, children }: DropdownProps) {
 }
 
 export default Dropdown;
+

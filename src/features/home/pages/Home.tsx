@@ -8,15 +8,17 @@ import { useMapProvider } from "@features/map/components/MapProvider.tsx";
 import useSocketEvent from "@shared/hooks/useSocketEvent.tsx";
 import PetDrawer from "../components/layout/PetDrawer.tsx";
 import Button from "../../../shared/components/common/Button.tsx";
-import { LocationSearching } from "@mui/icons-material";
+import { Add, LocationSearching } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
   const { pets, loading, loadMore, addPet } = useFetchPets();
   const { location } = useCurrentLocation();
   const { setMarkers, setFlyToTarget } = useMapProvider();
+  const navigate = useNavigate();
 
   useSocketEvent({
-    event: "pet:added",
+    event: "pet:created",
     callback: addPet,
   });
 
@@ -41,22 +43,28 @@ function Home() {
   }, [pets]);
 
   return (
-    <div className="bg-white h-full">
+    <div className="relative bg-white h-full">
       {loading && <LoadingScreen />}
-      <div className="absolute m-2 bottom-0 z-40 ">
+      <div className="absolute bottom-20 left-4 z-40 flex flex-col gap-2 lg:bottom-4">
         <Button
-          variant={"solid"}
+          variant="solid"
           color="grayscale"
-          className="px-2 drop-shadow-sm"
+          className="p-2.5 shadow-lg ring-1 ring-black/5"
           onClick={() => {
             if (!location) return;
-            console.log(`flying to: ${location}`);
             setFlyToTarget([...location]);
           }}
+          aria-label="Center on my location"
         >
-          <LocationSearching />
+          <LocationSearching fontSize="small" />
         </Button>
-        <Button className="rounded-full pl-3 pr-3 lg:hidden">+</Button>
+        <Button
+          className="h-9 w-9 rounded-full p-0 shadow-lg lg:hidden"
+          onClick={() => navigate("/post")}
+          aria-label="Report a pet"
+        >
+          <Add fontSize="small" />
+        </Button>
       </div>
       <HomeMap center={location ?? [14.6507, 121.1029]} />
 

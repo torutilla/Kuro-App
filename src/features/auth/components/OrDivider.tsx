@@ -2,9 +2,11 @@ import Divider from "@shared/components/common/Divider.tsx";
 
 function OrDivider() {
   return (
-    <div className="flex items-center w-full">
+    <div className="flex w-full items-center gap-3">
       <Divider />
-      <p className="p-2">OR</p>
+      <p className="text-xs font-medium tracking-widest text-neutral-400">
+        OR
+      </p>
       <Divider />
     </div>
   );

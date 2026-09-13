@@ -1,10 +1,10 @@
 import { Circle } from "@mui/icons-material";
 function LoadingComponent() {
   return (
-    <div className="flex gap-1 loading">
-      <Circle fontSize="inherit" />
-      <Circle fontSize="inherit" />
-      <Circle fontSize="inherit" />
+    <div className="flex items-end gap-0.5 loading" aria-label="Loading">
+      <Circle sx={{ fontSize: 6 }} />
+      <Circle sx={{ fontSize: 6 }} />
+      <Circle sx={{ fontSize: 6 }} />
     </div>
   );
 }

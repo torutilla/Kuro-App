@@ -1,4 +1,5 @@
 import Dropdown from "./DropdownButton.tsx";
+import { Logout, MoreHoriz } from "@mui/icons-material";
 
 type ProfileTabProps = {
   name: string;
@@ -9,58 +10,53 @@ type ProfileTabProps = {
 
 function ProfileTab({ name, email, avatarUrl, onLogout }: ProfileTabProps) {
   return (
-    <div className="relative flex items-center justify-between bg-white/5 hover:bg-white/10 transition rounded-xl p-3">
-      <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-full overflow-hidden bg-white/20 flex items-center justify-center">
+    <div className="relative flex items-center justify-between gap-2 rounded-xl border border-white/5 bg-white/5 p-3 transition-colors hover:bg-white/10">
+      <div className="flex min-w-0 flex-1 items-center gap-3">
+        <div className="grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-full bg-gradient-to-br from-white/25 to-white/5 ring-1 ring-white/20">
           {avatarUrl ? (
             <img
               src={avatarUrl}
               alt="avatar"
-              className="w-full h-full object-cover"
+              className="h-full w-full object-cover"
             />
           ) : (
             <span className="text-sm font-semibold text-white">
-              {name.charAt(0)}
+              {name.charAt(0).toUpperCase()}
             </span>
           )}
         </div>
 
-        <div className="flex flex-col">
-          <span className="text-sm font-semibold text-white leading-tight">
+        <div className="flex min-w-0 flex-col">
+          <span className="truncate text-sm leading-tight font-semibold text-white">
             {name}
           </span>
-          <span className="text-xs text-white/60 leading-tight">{email}</span>
+          <span className="truncate text-xs leading-tight text-white/60">
+            {email}
+          </span>
         </div>
       </div>
 
       <Dropdown
         trigger={
-          <button className="p-2 rounded-lg hover:bg-white/10 transition">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-5 h-5 text-white/70"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <circle cx="5" cy="12" r="1.5" fill="currentColor" />
-              <circle cx="12" cy="12" r="1.5" fill="currentColor" />
-              <circle cx="19" cy="12" r="1.5" fill="currentColor" />
-            </svg>
+          <button
+            aria-label="Account options"
+            className="rounded-lg p-2 text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+          >
+            <MoreHoriz fontSize="small" />
           </button>
         }
       >
-        <div className="absolute right-3 -top-5 w-40 bg-primary/80 backdrop-blur-md rounded-lg shadow-lg border border-white/10 z-50">
-          <button
-            onClick={onLogout}
-            className="w-full text-left px-4 py-2 text-sm text-red-400 hover:bg-white/10 rounded-lg"
-          >
-            Logout
-          </button>
-        </div>
+        <button
+          onClick={onLogout}
+          className="flex w-full items-center gap-2 px-4 py-2.5 text-left text-sm text-red-300 transition-colors hover:bg-white/10"
+        >
+          <Logout fontSize="small" />
+          Log out
+        </button>
       </Dropdown>
     </div>
   );
 }
 
 export default ProfileTab;
+
