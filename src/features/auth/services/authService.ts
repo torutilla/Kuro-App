@@ -3,7 +3,7 @@ import type { User, RegistrationInput } from "@shared/index.ts"
 
 const AuthService = {
     login(email: string, password: string): Promise<User> {
-        return fetchHandler("/auth/login", {
+        return fetchHandler("/api/v1/auth/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -14,7 +14,7 @@ const AuthService = {
     },
 
     signup(input: RegistrationInput): Promise<User> {
-        return fetchHandler("/auth/signup", {
+        return fetchHandler("/api/v1/auth/signup", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({

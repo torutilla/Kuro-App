@@ -9,8 +9,8 @@ function useFetchPets() {
   const loadMore = async () => {
     const query =
       cursor?.lastDateLost && cursor?.lastId
-        ? `/pets?lastDateLost=${cursor.lastDateLost}&lastId=${cursor.lastId}`
-        : "/pets";
+        ? `/api/v1/pets?lastDateLost=${cursor.lastDateLost}&lastId=${cursor.lastId}`
+        : "/api/v1/pets";
 
     const res = await run(() => fetchHandler(query));
     if (!res) return;
@@ -31,7 +31,7 @@ function useFetchPets() {
 
       return Array.from(map.values()).sort(
         (a, b) =>
-          new Date(b.date_lost).getTime() - new Date(a.date_lost).getTime(),
+          new Date(b.observed_at).getTime() - new Date(a.observed_at).getTime(),
       );
     });
   };

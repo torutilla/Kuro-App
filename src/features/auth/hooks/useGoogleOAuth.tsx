@@ -5,7 +5,7 @@ import useAsync from "@shared/hooks/useAsync.tsx";
 function useGoogleOAuth() {
   const { run, loading, error } = useAsync<User>();
   async function login() {
-    return await run(() => fetchHandler(`/auth/google`));
+    return await run(() => fetchHandler(`api/v1/auth/google`));
   }
   return { login, loading, error };
 }

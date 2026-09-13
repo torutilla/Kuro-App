@@ -2,22 +2,24 @@ import z from "zod/v3";
 
 export const petStatusSchema = z.enum(["lost", "found"]);
 
+const pointSchema = z.object({
+    lat: z.number().min(-90).max(90),
+    lng: z.number().min(-180).max(180),
+});
+
 export const PetSchema = z.object({
     id: z.string().uuid(),
     user_id: z.string().uuid(),
     name: z.string().min(1),
     type: z.string().min(1),
     breed: z.string().optional().nullable(),
-    color: z.string(),
-    description: z.string(),
+    color: z.string().min(1),
+    description: z.string().min(1),
     image_url: z.string().url(),
     status: petStatusSchema,
-    last_seen_location: z.string(),
-    date_lost: z.coerce.date(),
-    location_point: z.object({
-        lat: z.number(),
-        lng: z.number(),
-    }).optional().nullable(),
+    location_description: z.string().min(1),
+    observed_at: z.coerce.date(),
+    location_point: pointSchema,
 });
 
 export const cursorSchema = z.object({

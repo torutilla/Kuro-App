@@ -4,6 +4,6 @@ import { fetchHandler } from "@shared/index.ts";
 export const UserService = {
 
     getUser(): Promise<User | null> {
-        return fetchHandler("/users/me", { method: "GET" });
+        return fetchHandler("/api/v1/users/me", { method: "GET" });
     },
 }

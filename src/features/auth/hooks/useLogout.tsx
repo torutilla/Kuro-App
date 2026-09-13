@@ -7,7 +7,7 @@ export default function useLogout() {
   const navigate = useNavigate();
   const logout = async () => {
     try {
-      await fetchHandler("/auth/logout");
+      await fetchHandler("api/v1/auth/logout");
     } catch (error) {
       throw error;
     } finally {

@@ -5,7 +5,7 @@ function usePostPet() {
   const { run, loading, error } = useAsync<string>();
   const postPet = async (data: PetRequest) => {
     return run(() =>
-      fetchHandler("/pets/create", {
+      fetchHandler("api/v1/pets/create", {
         method: "POST",
         body: JSON.stringify(data),
       }),
